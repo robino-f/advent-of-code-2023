@@ -270,14 +270,12 @@ fun main() {
             History(mutableListOf(2,-6,-3,39,165,441,958,1836,3228,5324,8355,12597,18375,26067,36108,48994,65286,85614,110681,141267,178233)))
 
     val sumNext = histories
-            .stream()
             .map { it.computeDifference(); it.predictNext(); it.datasets.first().last() }
             .toList()
             .sum()
     println(sumNext)
 
     val sumPrevious = histories
-            .stream()
             .map { it.computeDifference(); it.predictPrevious(); it.datasets.first().first() }
             .toList()
             .sum()
