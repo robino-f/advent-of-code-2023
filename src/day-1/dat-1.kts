@@ -5,7 +5,17 @@ class Trebuchet(dataset: List<String>) {
         var calibrationValues = mutableListOf<Int>()
 
         for (value in dataset) {
-            var digits = value.filter { it.isDigit() }
+            var digits = value
+                    .replace(Regex("one"), "o1e")
+                    .replace(Regex("two"), "t2o")
+                    .replace(Regex("three"), "t3e")
+                    .replace(Regex("four"), "f4r")
+                    .replace(Regex("five"), "f5e")
+                    .replace(Regex("six"), "s6x")
+                    .replace(Regex("seven"), "s7n")
+                    .replace(Regex("eight"), "e8t")
+                    .replace(Regex("nine"), "n9e")
+                    .filter { it.isDigit() }
             var calibrationValue = (digits.first() + "" + digits.last()).toInt()
             calibrationValues.add(calibrationValue)
         }
@@ -16,10 +26,13 @@ class Trebuchet(dataset: List<String>) {
 
 fun main() {
     val text = Trebuchet(listOf(
-            "1abc2",
-            "pqr3stu8vwx",
-            "a1b2c3d4e5f",
-            "treb7uchet"
+            "two1nine",
+            "eightwothree",
+            "abcone2threexyz",
+            "xtwone3four",
+            "4nineeightseven2",
+            "zoneight234",
+            "7pqrstsixteen",
     ))
     val calibrationValues = text.computeCalibrationValues()
     println(calibrationValues)
