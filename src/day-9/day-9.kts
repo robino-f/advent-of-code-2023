@@ -1,5 +1,3 @@
-import kotlin.streams.toList
-
 class History(dataset: MutableList<Int>) {
     val datasets = mutableListOf(dataset)
 

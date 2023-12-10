@@ -1,5 +1,3 @@
-import kotlin.streams.toList
-
 class CubesSet(redCubesNumber: Int, greenCubesNumber: Int, blueCubesNumber: Int) {
     val redCubesNumber = redCubesNumber
     val greenCubesNumber = greenCubesNumber
