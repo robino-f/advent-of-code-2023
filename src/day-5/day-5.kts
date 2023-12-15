@@ -304,26 +304,6 @@ fun main() {
 
     println("min (part-1): " + getSeedsValues(almanacMaps, seeds).min())
 
-//    var minValue = BigInteger.valueOf(Long.MAX_VALUE)
-//    for (seedIndex in seeds.indices) {
-//        if (seedIndex % 2 != 0) continue
-//
-//        var i = BigInteger.ZERO
-//        val range = seeds[seedIndex + 1]
-//
-//        while (i < range) {
-//            var value = seeds[seedIndex] + i
-//            for (almanacMap in almanacMaps) {
-//                value = almanacMap.mapValue(value)
-//            }
-//
-//            if (minValue > value) minValue = value
-//            i += BigInteger.ONE
-//        }
-//    }
-//
-//    println("min (part-2): " + minValue)
-
     fun isSeedKnown(seed: BigInteger): Boolean {
         var i = 0
         while (i < seeds.size) {
@@ -343,14 +323,13 @@ fun main() {
     var cpt = BigInteger.ZERO
     var firstValue = BigInteger.ZERO
 
-    while (seedFound == BigInteger.ZERO){
-
-        for(i in almanacMaps.size-1 downTo 0){
+    while (seedFound == BigInteger.ZERO) {
+        for (i in almanacMaps.size - 1 downTo 0) {
             value = almanacMaps[i].reversedMapValue(value)
-            if(i == almanacMaps.size-1)  firstValue = value
+            if (i == almanacMaps.size - 1) firstValue = value
         }
 
-        if(!isSeedKnown(value)){
+        if (!isSeedKnown(value)) {
             cpt += BigInteger.ONE
             value = BigInteger.ZERO + cpt
         } else {
