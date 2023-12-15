@@ -42,12 +42,12 @@ fun main() {
     val distances = extractValues(data[1])
 
     val numberOfWays = times.zip(distances).map { Race(it.first, it.second).winPossibilities() }.reduce { acc, factor -> acc * factor }
-    println("min (part-1): $numberOfWays")
+    println("possibilities (part-1): $numberOfWays")
 
     val race = Race(extractValues(data[0], "")[0], extractValues(data[1], "")[0])
     println(race)
 
-    println("min (part-2): " + race.winPossibilities())
+    println("possibilities (part-2): " + race.winPossibilities())
 }
 
 main()
