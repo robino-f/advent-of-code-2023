@@ -1143,7 +1143,7 @@ fun main() {
     for (i in hands.indices) {
         score += hands[i] * (i + 1)
     }
-    println("score (part-2): %.2f".format(score)) // 245576185
+    println("score (part-2): %.0f".format(score)) // 245576185
 
 }
 
