@@ -10,3 +10,11 @@
 - [x] day 8
 - [x] day 9
 - [x] day 10
+- [x] day 11
+- [ ] day 12
+- [ ] day 13
+- [ ] day 14
+- [ ] day 15
+- [ ] day 16
+- [ ] day 17
+- [ ] day 18

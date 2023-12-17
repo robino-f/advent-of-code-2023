@@ -20,7 +20,7 @@ class Coordinate(val x: Int, val y: Int) {
     }
 
     override fun hashCode(): Int {
-        return 757 * x + y
+        return 31 * x + y
     }
 
     override fun toString(): String {
