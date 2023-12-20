@@ -53,11 +53,11 @@ class EngineSchematic(schematicLines: List<String>) {
                     if (isLinked(lineIndex, i)) isPartMemberOfEngine = isLinked(lineIndex, i)
                     if ((i == line.length - 1 || !line[i + 1].isDigit()) && isPartMemberOfEngine) {
                         numberIndexes.add(currentNumber.toInt())
-                        currentNumber = "";
+                        currentNumber = ""
                         isPartMemberOfEngine = false
                     }
                 } else {
-                    currentNumber = "";
+                    currentNumber = ""
                     isPartMemberOfEngine = false
                 }
 

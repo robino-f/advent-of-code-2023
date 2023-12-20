@@ -2,17 +2,17 @@ class BrokenSprings(private val springs: String, private val groups: MutableList
     private val cache = HashMap<String, Double>()
     fun getPossibleArrangements(currentSprings: String = springs, currentGroups: MutableList<Int> = groups): Double {
         if (cache.containsKey(currentSprings + currentGroups)) {
-            return cache[currentSprings + currentGroups]!!;
+            return cache[currentSprings + currentGroups]!!
         }
 
         if (currentGroups.size == 0) {
             if (currentSprings.any { it == '#' }) return 0.0
-            return 1.0; // only '.' remaining, it's a match
+            return 1.0 // only '.' remaining, it's a match
         }
 
         // if there are too much chars to fill
         if (currentSprings.length < currentGroups.sum() + currentGroups.size - 1) {
-            return 0.0;
+            return 0.0
         }
 
         if (currentSprings[0] == '#') {
@@ -33,7 +33,7 @@ class BrokenSprings(private val springs: String, private val groups: MutableList
         }
         // ignore '.'
         else if (currentSprings[0] == '.') {
-            return getPossibleArrangements(currentSprings.substring(1), currentGroups);
+            return getPossibleArrangements(currentSprings.substring(1), currentGroups)
         }
 
         val nextSpringsA = "#" + currentSprings.substring(1)

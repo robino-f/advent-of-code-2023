@@ -8,7 +8,7 @@ class Card(id: Int, winningNumbers: List<Int>, pickedNumbers: List<Int>, numberO
 
     fun getScore(): Int {
         var includedNumbers = pickedNumbers.filter { winningNumbers.indexOf(it) >= 0 }.size
-        return includedNumbers;
+        return includedNumbers
     }
 
     fun getScoreWithPower(): Int {

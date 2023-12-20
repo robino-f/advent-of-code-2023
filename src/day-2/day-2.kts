@@ -168,8 +168,8 @@ fun main() {
         val cubesSets = elementSplited[1]
                 .split(";")
                 .map {
-                    val colors = it.split(",");
-                    var red = 0;
+                    val colors = it.split(",")
+                    var red = 0
                     var green = 0
                     var blue = 0
                     for (color in colors) {

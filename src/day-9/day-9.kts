@@ -10,7 +10,7 @@ class History(dataset: MutableList<Int>) {
 
     fun computeDifference() {
         val lastDataSet = datasets.last()
-        if (areAllZeros(lastDataSet)) return;
+        if (areAllZeros(lastDataSet)) return
 
         val childDataSet = mutableListOf<Int>()
         for (i in 0..lastDataSet.size - 2) {
