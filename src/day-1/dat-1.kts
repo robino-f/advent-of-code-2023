@@ -1,3 +1,13 @@
+val text = Trebuchet(listOf(
+        "two1nine",
+        "eightwothree",
+        "abcone2threexyz",
+        "xtwone3four",
+        "4nineeightseven2",
+        "zoneight234",
+        "7pqrstsixteen",
+))
+
 class Trebuchet(dataset: List<String>) {
     val dataset = dataset
 
@@ -25,15 +35,6 @@ class Trebuchet(dataset: List<String>) {
 }
 
 fun main() {
-    val text = Trebuchet(listOf(
-            "two1nine",
-            "eightwothree",
-            "abcone2threexyz",
-            "xtwone3four",
-            "4nineeightseven2",
-            "zoneight234",
-            "7pqrstsixteen",
-    ))
     val calibrationValues = text.computeCalibrationValues()
     println(calibrationValues)
     println(calibrationValues.sum()) // 142

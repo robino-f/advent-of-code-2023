@@ -1,5 +1,14 @@
 import java.math.BigInteger
 
+//    val data = listOf(
+//            "Time:      7  15   30",
+//            "Distance:  9  40  200"
+//    )
+val data = listOf(
+        "Time:        47     70     75     66",
+        "Distance:   282   1079   1147   1062"
+)
+
 class Race(time: BigInteger, record: BigInteger) {
     val time = time
     val record = record
@@ -29,15 +38,6 @@ fun extractValues(data: String, replacement: String = " "): List<BigInteger> {
 }
 
 fun main() {
-//    val data = listOf(
-//            "Time:      7  15   30",
-//            "Distance:  9  40  200"
-//    )
-    val data = listOf(
-            "Time:        47     70     75     66",
-            "Distance:   282   1079   1147   1062"
-    )
-
     val times = extractValues(data[0])
     val distances = extractValues(data[1])
 

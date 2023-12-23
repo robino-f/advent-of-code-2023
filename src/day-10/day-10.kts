@@ -1,140 +1,6 @@
 import kotlin.math.abs
 import kotlin.math.ceil
 
-fun shoelaceArea(v: List<Coordinate>): Double {
-    val n = v.size
-    var a = 0.0
-    for (i in 0 until n - 1) {
-        a += v[i].x * v[i + 1].y - v[i + 1].x * v[i].y
-    }
-    return abs(a + v[n - 1].x * v[0].y - v[0].x * v[n - 1].y) / 2.0
-}
-
-class Coordinate(val x: Int, val y: Int) {
-
-    override fun equals(other: Any?): Boolean {
-        if (other is Coordinate) {
-            return other.x == x && other.y == y
-        }
-        return false
-    }
-
-    override fun hashCode(): Int {
-        return 31 * x + y
-    }
-
-    override fun toString(): String {
-        return "(x: $x, y: $y)"
-    }
-}
-
-class PipesLoop(private val tiles: MutableList<String>) {
-    private val startingPosition = setStartingPosition()
-    val visitedPositions = mutableListOf(startingPosition)
-
-    private fun getConnectedTiles(coordinate: Coordinate): MutableList<Coordinate> {
-        val currentTile = tiles[coordinate.x][coordinate.y]
-        val connectedTiles = mutableListOf<Coordinate>()
-
-        // right
-        if (coordinate.y + 1 < tiles[coordinate.x].length) {
-            val tile = tiles[coordinate.x][coordinate.y + 1]
-            if ((tile == '-' || tile == 'J' || tile == '7') && (currentTile == '-' || currentTile == 'L' || currentTile == 'F')) {
-                connectedTiles.add(Coordinate(coordinate.x, coordinate.y + 1))
-            }
-        }
-
-        // left
-        if (coordinate.y - 1 >= 0) {
-            val tile = tiles[coordinate.x][coordinate.y - 1]
-            if ((tile == 'L' || tile == 'F' || tile == '-') && (currentTile == '-' || currentTile == '7' || currentTile == 'J')) {
-                connectedTiles.add(Coordinate(coordinate.x, coordinate.y - 1))
-            }
-        }
-
-        // top
-        if (coordinate.x - 1 >= 0) {
-            val tile = tiles[coordinate.x - 1][coordinate.y]
-            if ((tile == '|' || tile == 'F' || tile == '7') && (currentTile == '|' || currentTile == 'J' || currentTile == 'L')) {
-                connectedTiles.add(Coordinate(coordinate.x - 1, coordinate.y))
-            }
-        }
-
-        // bottom
-        if (coordinate.x + 1 < tiles.size) {
-            val tile = tiles[coordinate.x + 1][coordinate.y]
-            if ((tile == '|' || tile == 'L' || tile == 'J') && (currentTile == '|' || currentTile == '7' || currentTile == 'F')) {
-                connectedTiles.add(Coordinate(coordinate.x + 1, coordinate.y))
-            }
-        }
-
-        return connectedTiles
-    }
-
-    private fun setStartingPosition(): Coordinate {
-        for (x in 0..<tiles.size) {
-            for (y in 0..<tiles[x].length) {
-                val tile = tiles[x][y]
-
-                if (tile == 'S') {
-                    var startingTile = '|'
-                    val connectedTiles = getConnectedTiles(Coordinate(x, y))
-
-                    // right
-                    if (connectedTiles.indexOf(Coordinate(x, y + 1)) != -1) {
-                        if (connectedTiles.indexOf(Coordinate(x, y - 1)) != -1) {
-                            startingTile = '-' // left-right
-                        }
-                        if (connectedTiles.indexOf(Coordinate(x - 1, y)) != -1) {
-                            startingTile = 'L' // top-right
-                        }
-                        if (connectedTiles.indexOf(Coordinate(x + 1, y)) != -1) {
-                            startingTile = 'F' // bottom-right
-                        }
-                    }
-
-                    // left
-                    if (connectedTiles.indexOf(Coordinate(x, y - 1)) != -1) {
-                        if (connectedTiles.indexOf(Coordinate(x - 1, y)) != -1) {
-                            startingTile = 'J' // left-top
-                        }
-                        if (connectedTiles.indexOf(Coordinate(x + 1, y)) != -1) {
-                            startingTile = '7' // left-bottom
-                        }
-                    }
-
-                    tiles[x] = tiles[x].replace('S', startingTile)
-                    return Coordinate(x, y)
-                }
-            }
-        }
-        return Coordinate(0, 0)
-    }
-
-    fun findLoopFarthestStep(): Int {
-        var tilesToVisit = getConnectedTiles(startingPosition).filter { visitedPositions.indexOf(it) == -1 }
-
-        while (visitedPositions.size < 3 || tilesToVisit.isNotEmpty()) {
-            visitedPositions.add(tilesToVisit[0])
-            tilesToVisit = getConnectedTiles(tilesToVisit[0]).filter { visitedPositions.indexOf(it) == -1 }
-        }
-
-        return ceil(visitedPositions.size / 2.0).toInt()
-
-    }
-
-    override fun toString(): String {
-        var printResult = ""
-
-        for (line in tiles) {
-            printResult += line + "\n"
-        }
-
-        return printResult
-    }
-}
-
-fun main() {
 //    val data = mutableListOf(
 //            "...........",
 //            ".S-------7.",
@@ -146,7 +12,7 @@ fun main() {
 //            ".L--J.L--J.",
 //            "..........."
 //    )
-    val data = mutableListOf(
+val data = mutableListOf(
         "7-J-..FF.FLJJ7-7-L|7FFF7F7FF..|7-77.F77L---|7L-77-FF.LF-J77F-7L7L7|--.F-|.FFFF-|7-|.F--|FF.F.F77-L7-|7FF.FJ7FLL7-J7-|7|-L7-|7.7FF|-7-F.7777|",
         "|-|--FJ|F|..LLFL7FJJF-LJ-J-F|-L7-J-FJFJ|FF--J.L|J-|L-7LJJF-JJFLL-|J.J-LF7--7|..|L|L--.FLLJFJ-FJF-L|7|--J--..--|J7.F.LF..||.LJ.F-F7-|LJ-|F--7",
         "|--.L|L|.L--7.L.|7|.F-J7F-7|JFF-7LF-7LL7LLL7LFLJ7LL7.F7L--.|.F7J.L7-|.7J|J|L|F--7LL.FF7||FF|L|7|-FF|J7F||LFLJ7|F7-FF.LJFF7-7FFJ.L-F77.|F||.-",
@@ -287,8 +153,142 @@ fun main() {
         "|F-JF.FL|.7..JJ7|FJF7-FLJJ|-J-||-FJ.F-7-F|FL|.L-77.|FLJLL.|.||.|LJJ-JJLL7||J.F.FFLJ||J.FF7.-7LL--F7FF77LLF7-7FLFLF-777L-7LF7LF-JLFF|L|J-F-F7",
         "L-7J..7.L--J-LLFJF-L7F--|FL|.F77J|LJ77|L|J7.F7J.L7-|JJ|FJ|J--J.JLLF7|J.|L|F-LF.-L7L||L-J|---77L7LFL-LJ|---|FFJ-7-F.|.JF-|-F|7J-7JFFJF77.-77F",
         "|-7-77-FJLJJ.J.J-|J.L.L----L-JJJ.FJ.LLJ-L..LJJ-F-F-JJ.-J7J..7J.L7--|--L-|JLJLF7.L7-LJ-JL--|-|-JL-LJ-LF.L-.L-7JL|L|-L7LLJL|.J7..J-J.L-7-7---J"
-    )
+)
 
+fun shoelaceArea(v: List<Coordinate>): Double {
+    val n = v.size
+    var a = 0.0
+    for (i in 0 until n - 1) {
+        a += v[i].x * v[i + 1].y - v[i + 1].x * v[i].y
+    }
+    return abs(a + v[n - 1].x * v[0].y - v[0].x * v[n - 1].y) / 2.0
+}
+
+class Coordinate(val x: Int, val y: Int) {
+
+    override fun equals(other: Any?): Boolean {
+        if (other is Coordinate) {
+            return other.x == x && other.y == y
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return 31 * x + y
+    }
+
+    override fun toString(): String {
+        return "(x: $x, y: $y)"
+    }
+}
+
+class PipesLoop(private val tiles: MutableList<String>) {
+    private val startingPosition = setStartingPosition()
+    val visitedPositions = mutableListOf(startingPosition)
+
+    private fun getConnectedTiles(coordinate: Coordinate): MutableList<Coordinate> {
+        val currentTile = tiles[coordinate.x][coordinate.y]
+        val connectedTiles = mutableListOf<Coordinate>()
+
+        // right
+        if (coordinate.y + 1 < tiles[coordinate.x].length) {
+            val tile = tiles[coordinate.x][coordinate.y + 1]
+            if ((tile == '-' || tile == 'J' || tile == '7') && (currentTile == '-' || currentTile == 'L' || currentTile == 'F')) {
+                connectedTiles.add(Coordinate(coordinate.x, coordinate.y + 1))
+            }
+        }
+
+        // left
+        if (coordinate.y - 1 >= 0) {
+            val tile = tiles[coordinate.x][coordinate.y - 1]
+            if ((tile == 'L' || tile == 'F' || tile == '-') && (currentTile == '-' || currentTile == '7' || currentTile == 'J')) {
+                connectedTiles.add(Coordinate(coordinate.x, coordinate.y - 1))
+            }
+        }
+
+        // top
+        if (coordinate.x - 1 >= 0) {
+            val tile = tiles[coordinate.x - 1][coordinate.y]
+            if ((tile == '|' || tile == 'F' || tile == '7') && (currentTile == '|' || currentTile == 'J' || currentTile == 'L')) {
+                connectedTiles.add(Coordinate(coordinate.x - 1, coordinate.y))
+            }
+        }
+
+        // bottom
+        if (coordinate.x + 1 < tiles.size) {
+            val tile = tiles[coordinate.x + 1][coordinate.y]
+            if ((tile == '|' || tile == 'L' || tile == 'J') && (currentTile == '|' || currentTile == '7' || currentTile == 'F')) {
+                connectedTiles.add(Coordinate(coordinate.x + 1, coordinate.y))
+            }
+        }
+
+        return connectedTiles
+    }
+
+    private fun setStartingPosition(): Coordinate {
+        for (x in 0..<tiles.size) {
+            for (y in 0..<tiles[x].length) {
+                val tile = tiles[x][y]
+
+                if (tile == 'S') {
+                    var startingTile = '|'
+                    val connectedTiles = getConnectedTiles(Coordinate(x, y))
+
+                    // right
+                    if (connectedTiles.indexOf(Coordinate(x, y + 1)) != -1) {
+                        if (connectedTiles.indexOf(Coordinate(x, y - 1)) != -1) {
+                            startingTile = '-' // left-right
+                        }
+                        if (connectedTiles.indexOf(Coordinate(x - 1, y)) != -1) {
+                            startingTile = 'L' // top-right
+                        }
+                        if (connectedTiles.indexOf(Coordinate(x + 1, y)) != -1) {
+                            startingTile = 'F' // bottom-right
+                        }
+                    }
+
+                    // left
+                    if (connectedTiles.indexOf(Coordinate(x, y - 1)) != -1) {
+                        if (connectedTiles.indexOf(Coordinate(x - 1, y)) != -1) {
+                            startingTile = 'J' // left-top
+                        }
+                        if (connectedTiles.indexOf(Coordinate(x + 1, y)) != -1) {
+                            startingTile = '7' // left-bottom
+                        }
+                    }
+
+                    tiles[x] = tiles[x].replace('S', startingTile)
+                    return Coordinate(x, y)
+                }
+            }
+        }
+        return Coordinate(0, 0)
+    }
+
+    fun findLoopFarthestStep(): Int {
+        var tilesToVisit = getConnectedTiles(startingPosition).filter { visitedPositions.indexOf(it) == -1 }
+
+        while (visitedPositions.size < 3 || tilesToVisit.isNotEmpty()) {
+            visitedPositions.add(tilesToVisit[0])
+            tilesToVisit = getConnectedTiles(tilesToVisit[0]).filter { visitedPositions.indexOf(it) == -1 }
+        }
+
+        return ceil(visitedPositions.size / 2.0).toInt()
+
+    }
+
+    override fun toString(): String {
+        var printResult = ""
+
+        for (line in tiles) {
+            printResult += line + "\n"
+        }
+
+        return printResult
+    }
+}
+
+fun main() {
     val pipesLoop = PipesLoop(data)
     val steps = pipesLoop.findLoopFarthestStep()
     println("steps (part-1): $steps")
