@@ -242,7 +242,7 @@ class TilesEnergizer(private val tiles: List<String>) {
 fun main() {
     val tilesEnergizer = TilesEnergizer(data)
 
-    println("energized tiles (part-1): " + tilesEnergizer.countEnergizedTiles())
+    println("energized tiles (part-1): " + tilesEnergizer.countEnergizedTiles()) // 7788
 
     val start = System.currentTimeMillis()
     val energizedTiles = tilesEnergizer.countMaxEnergizedTiles() // 7987

@@ -1,22 +1,14 @@
-val text = Trebuchet(listOf(
-        "two1nine",
-        "eightwothree",
-        "abcone2threexyz",
-        "xtwone3four",
-        "4nineeightseven2",
-        "zoneight234",
-        "7pqrstsixteen",
-))
+import java.io.File
 
-class Trebuchet(dataset: List<String>) {
-    val dataset = dataset
+val text = Trebuchet(File("input.txt").readLines())
 
-    fun computeCalibrationValues(): List<Int> {
+class Trebuchet(private val dataset: List<String>) {
+
+    fun computeCalibrationValues(part1: Boolean = true): List<Int> {
         var calibrationValues = mutableListOf<Int>()
 
         for (value in dataset) {
-            var digits = value
-                    .replace(Regex("one"), "o1e")
+            var digits = if (part1) value else value.replace(Regex("one"), "o1e")
                     .replace(Regex("two"), "t2o")
                     .replace(Regex("three"), "t3e")
                     .replace(Regex("four"), "f4r")
@@ -25,7 +17,7 @@ class Trebuchet(dataset: List<String>) {
                     .replace(Regex("seven"), "s7n")
                     .replace(Regex("eight"), "e8t")
                     .replace(Regex("nine"), "n9e")
-                    .filter { it.isDigit() }
+            digits = digits.filter { it.isDigit() }
             var calibrationValue = (digits.first() + "" + digits.last()).toInt()
             calibrationValues.add(calibrationValue)
         }
@@ -35,9 +27,10 @@ class Trebuchet(dataset: List<String>) {
 }
 
 fun main() {
-    val calibrationValues = text.computeCalibrationValues()
-    println(calibrationValues)
-    println(calibrationValues.sum()) // 142
+    var calibrationValues = text.computeCalibrationValues()
+    println(calibrationValues.sum()) // 53194
+    calibrationValues = text.computeCalibrationValues(false)
+    println(calibrationValues.sum()) // 54249
 }
 
 main()

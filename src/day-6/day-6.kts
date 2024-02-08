@@ -1,13 +1,8 @@
+import java.io.File
 import java.math.BigInteger
 
-//    val data = listOf(
-//            "Time:      7  15   30",
-//            "Distance:  9  40  200"
-//    )
-val data = listOf(
-        "Time:        47     70     75     66",
-        "Distance:   282   1079   1147   1062"
-)
+
+val data = File("input.txt").readLines()
 
 class Race(time: BigInteger, record: BigInteger) {
     val time = time
@@ -42,12 +37,10 @@ fun main() {
     val distances = extractValues(data[1])
 
     val numberOfWays = times.zip(distances).map { Race(it.first, it.second).winPossibilities() }.reduce { acc, factor -> acc * factor }
-    println("possibilities (part-1): $numberOfWays")
+    println("possibilities (part-1): $numberOfWays") // 281600
 
     val race = Race(extractValues(data[0], "")[0], extractValues(data[1], "")[0])
-    println(race)
-
-    println("possibilities (part-2): " + race.winPossibilities())
+    println("possibilities (part-2): " + race.winPossibilities()) // 33875953
 }
 
 main()
